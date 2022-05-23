@@ -3,13 +3,15 @@ import mongoose from "mongoose";
 interface IUser {
     name: string;
     email: string;
+    password: string;
     photo: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
     {
-        name: { type: String, required: [true, "用戶名稱未填寫"] },
+        name: { type: String, required: [true, "name 未填寫"] },
         email: { type: String, required: [true, "email 未填寫"] },
+        password: { type: String, required: [true, "password 未填寫"] },
         photo: { type: String, default: "https://i.imgur.com/tPmUQVM.png" },
     },
     { versionKey: false, timestamps: true }
