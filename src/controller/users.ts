@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
 import * as Model from "../model";
 
 class UsersController {
@@ -10,9 +11,22 @@ class UsersController {
         res.send({ status: "success", result });
     };
 
-    createUsers = async (req: Request, res: Response): Promise<void> => {
-        const { name, email, photo } = req.body;
-        const result = await Model.Users.create({ name, email, photo });
+    /**
+     * @description 使用者註冊
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    createUser = async (req: Request, res: Response): Promise<void> => {
+        const { name, email, photo, password: originPassword } = req.body;
+        if (!name || !email || !originPassword) {
+            throw new Error("格式錯誤");
+        }
+        if ((await Model.Users.find({ email })).length) {
+            throw new Error("此 Email 已被註冊!");
+        }
+        const password = await bcrypt.hash(originPassword, 12);
+        const result = await Model.Users.create({ name, email, photo, password });
         res.send({ status: "success", result });
     };
 }

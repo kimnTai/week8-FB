@@ -6,6 +6,6 @@ const router = Utils.catchAsyncRouter(express.Router());
 
 router.get("/", Controller.User.getUsers);
 
-router.post("/", Controller.User.createUsers);
+router.post("/sign_up", Controller.User.createUser);
 
 export default router;
