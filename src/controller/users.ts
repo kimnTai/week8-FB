@@ -29,6 +29,27 @@ class UsersController {
         const result = await Model.Users.create({ name, email, password });
         res.send({ status: "success", result });
     };
+
+    /**
+     * @description 使用者登入
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    userSignIn = async (req: Request, res: Response): Promise<void> => {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            throw new Error("格式錯誤");
+        }
+        const user = await Model.Users.findOne({ email });
+        if (!user) {
+            throw new Error("此 Email 不存在!");
+        }
+        if (!(await bcrypt.compare(password, user.password))) {
+            throw new Error("密碼錯誤!");
+        }
+        res.send({ status: "success", message: "登入成功" });
+    };
 }
 
 export default new UsersController();
