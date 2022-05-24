@@ -18,7 +18,7 @@ class UsersController {
      * @memberof UsersController
      */
     createUser = async (req: Request, res: Response): Promise<void> => {
-        const { name, email, photo, password: originPassword } = req.body;
+        const { name, email, password: originPassword } = req.body;
         if (!name || !email || !originPassword) {
             throw new Error("格式錯誤");
         }
@@ -26,7 +26,7 @@ class UsersController {
             throw new Error("此 Email 已被註冊!");
         }
         const password = await bcrypt.hash(originPassword, 12);
-        const result = await Model.Users.create({ name, email, photo, password });
+        const result = await Model.Users.create({ name, email, password });
         res.send({ status: "success", result });
     };
 }
