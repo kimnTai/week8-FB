@@ -10,7 +10,7 @@ class ImageController {
         const formData = new FormData();
         formData.append("image", req.file.buffer);
         const { data } = await axios.post("https://api.imgur.com/3/image", formData, {
-            headers: { Authorization: "Client-D 62004dc8f2239f1" },
+            headers: { Authorization: "Client-ID 62004dc8f2239f1" },
         });
         res.send({ status: "success", result: data.data.link });
     };
