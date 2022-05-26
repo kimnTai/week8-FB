@@ -25,6 +25,27 @@ class Middleware {
             },
         }).single("image")(req, res, next);
     };
+
+    /**F
+     * @description 使用者註冊檢查
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @memberof Middleware
+     */
+    checkSignUp = (req: Request, res: Response, next: NextFunction) => {
+        const { name, email, password } = req.body;
+        if (!name || !email || !password) {
+            throw new Error("欄位未填寫正確");
+        }
+        if (!validator.isEmail(email)) {
+            throw new Error("Email 格式不正確");
+        }
+        if (!validator.isLength(password, { min: 8 })) {
+            throw new Error("password 長度應至少 8 碼以上");
+        }
+        next();
+    };
 }
 
 const middleware = new Middleware();

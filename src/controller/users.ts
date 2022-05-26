@@ -19,9 +19,6 @@ class UsersController {
      */
     createUser = async (req: Request, res: Response): Promise<void> => {
         const { name, email, password: originPassword } = req.body;
-        if (!name || !email || !originPassword) {
-            throw new Error("格式錯誤");
-        }
         if (await Model.Users.findOne({ email })) {
             throw new Error("此 Email 已被註冊!");
         }
