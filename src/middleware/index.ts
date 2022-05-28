@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import multer from "multer";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import Utils from "../utils";
 
 class Middleware {
@@ -26,7 +28,7 @@ class Middleware {
         }).single("image")(req, res, next);
     };
 
-    /**F
+    /**
      * @description 使用者註冊檢查
      * @param {Request} req
      * @param {Response} res
@@ -62,6 +64,23 @@ class Middleware {
     checkUpdatePassword = (req: Request, res: Response, next: NextFunction) => {
         const { id, password } = req.body;
         Utils.checkValidator({ id, password });
+        next();
+    };
+
+    /**
+     * @description token 身分驗證
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @memberof Middleware
+     */
+    isAuth = (req: Request, res: Response, next: NextFunction) => {
+        const { id, token } = req.body;
+        Utils.checkValidator({ id, token });
+        const result = jwt.verify(token, process.env.JWT_SECRET as string);
+        if (id !== (<any>result).id) {
+            throw new Error("token 錯誤");
+        }
         next();
     };
 }

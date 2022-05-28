@@ -13,8 +13,8 @@ router.post("/sign_in", middleware.checkSignIn, Controller.User.signIn);
 
 router.post("/updatePassword", middleware.checkUpdatePassword, Controller.User.updatePassword);
 
-router.get("/profile", Controller.User.getProfile);
+router.get("/profile", middleware.isAuth, Controller.User.getProfile);
 
-router.patch("/profile", Controller.User.updateProfile);
+router.patch("/profile", middleware.isAuth, Controller.User.updateProfile);
 
 export default router;
