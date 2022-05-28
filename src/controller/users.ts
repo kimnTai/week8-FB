@@ -25,8 +25,8 @@ class UsersController {
             throw new Error("此 Email 已被註冊!");
         }
         const password = await bcrypt.hash(originPassword, 12);
-        const result = await Model.Users.create({ name, email, password });
-        (<any>result).password = undefined;
+        const _result = await Model.Users.create({ name, email, password });
+        const { password: _, ...result } = _result.toObject();
         res.send({ status: "success", result });
     };
 
@@ -45,8 +45,8 @@ class UsersController {
         if (!(await bcrypt.compare(password, user.password))) {
             throw new Error("密碼錯誤!");
         }
-        const Secret = process.env.JWT_SECRET as string;
-        const token = jwt.sign({ email }, Secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
+        const secret = process.env.JWT_SECRET as string;
+        const token = jwt.sign({ email }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
         res.send({ status: "success", message: "登入成功", token });
     };
 
