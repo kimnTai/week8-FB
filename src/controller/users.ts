@@ -46,7 +46,7 @@ class UsersController {
             throw new Error("密碼錯誤!");
         }
         const secret = process.env.JWT_SECRET as string;
-        const token = jwt.sign({ email }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
+        const token = jwt.sign({ id: user._id }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
         res.send({ status: "success", message: "登入成功", token });
     };
 
