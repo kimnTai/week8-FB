@@ -88,7 +88,16 @@ class Middleware {
                     break;
                 case "password":
                     if (!validator.isLength(value, { min: 8 })) {
-                        throw new Error("password 長度應至少 8 碼以上");
+                        throw new Error("密碼需至少 8 碼以上");
+                    }
+                    if (validator.isAlpha(value)) {
+                        throw new Error("密碼不能只有英文");
+                    }
+                    if (validator.isNumeric(value)) {
+                        throw new Error("密碼不能只有數字");
+                    }
+                    if (!validator.isAlphanumeric(value)) {
+                        throw new Error("密碼需至少 8 碼以上，並英數混合");
                     }
                     break;
                 default:
