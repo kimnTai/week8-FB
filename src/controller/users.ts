@@ -6,10 +6,9 @@ import * as Model from "../model";
 
 class UsersController {
     getUsers = async (req: Request, res: Response): Promise<void> => {
-        const { limit } = req.query;
         const result = await Model.Users.find()
             .sort("-createdAt")
-            .limit(Number(limit) ?? 10);
+            .limit(Number(req.query.limit) ?? 10);
         res.send({ status: "success", result });
     };
 
@@ -56,10 +55,8 @@ class UsersController {
      * @memberof UsersController
      */
     updatePassword = async (req: Request, res: Response) => {
-        const { id, password: newPassword } = req.body;
-        const password = await bcrypt.hash(newPassword, 12);
-        const result = await Model.Users.findByIdAndUpdate(id, { password });
-        if (!result) {
+        const password = await bcrypt.hash(req.body.password, 12);
+        if (!(await Model.Users.findByIdAndUpdate(req.body.id, { password }))) {
             throw new Error("此 id 不存在");
         }
         res.send({ status: "success", message: "密碼重設成功" });
@@ -72,14 +69,11 @@ class UsersController {
      * @memberof UsersController
      */
     getProfile = async (req: Request, res: Response) => {
-        const { id, token } = req.body;
-        const secret = process.env.JWT_SECRET as string;
-        const jwtRes = jwt.verify(token, secret);
-        const result = await Model.Users.findById(id);
+        const result = await Model.Users.findById(req.body.id);
         if (!result) {
             throw new Error("此 id 不存在");
         }
-        res.send({ status: "success", result, jwtRes });
+        res.send({ status: "success", result });
     };
 
     /**
