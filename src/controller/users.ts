@@ -50,10 +50,13 @@ class UsersController {
      * @description 重設密碼
      * @memberof UsersController
      */
-    userUpdatePassword = async (req: Request, res: Response) => {
+    updatePassword = async (req: Request, res: Response) => {
         const { id, password: newPassword } = req.body;
         const password = await bcrypt.hash(newPassword, 12);
-        await Model.Users.findByIdAndUpdate(id, { password });
+        const result = await Model.Users.findByIdAndUpdate(id, { password });
+        if (!result) {
+            throw new Error("此 id 不存在");
+        }
         res.send({ status: "success", message: "密碼重設成功" });
     };
 }

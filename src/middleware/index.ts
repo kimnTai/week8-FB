@@ -53,6 +53,19 @@ class Middleware {
     };
 
     /**
+     * @description 使用者修改密碼檢查
+     * @param {Request} req
+     * @param {Response} res
+     * @param {NextFunction} next
+     * @memberof Middleware
+     */
+    checkUpdatePassword = (req: Request, res: Response, next: NextFunction) => {
+        const { id, password } = req.body;
+        this._checkValidator({ id, password });
+        next();
+    };
+
+    /**
      * @description validator 驗證
      * @param {{ [key: string]: string }} param
      * @memberof Middleware
