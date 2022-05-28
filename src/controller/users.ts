@@ -70,8 +70,15 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    getProfile = (req: Request, res: Response) => {
-        res.send({ status: "success" });
+    getProfile = async (req: Request, res: Response) => {
+        const { id, token } = req.body;
+        const secret = process.env.JWT_SECRET as string;
+        const jwtRes = jwt.verify(token, secret);
+        const result = await Model.Users.findById(id);
+        if (!result) {
+            throw new Error("此 id 不存在");
+        }
+        res.send({ status: "success", result, jwtRes });
     };
 
     /**
