@@ -63,6 +63,26 @@ class UsersController {
         }
         res.send({ status: "success", message: "密碼重設成功" });
     };
+
+    /**
+     * @description 取得個人資料
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getProfile = (req: Request, res: Response) => {
+        res.send({ status: "success" });
+    };
+
+    /**
+     * @description 更新個人資料
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    updateProfile = (req: Request, res: Response) => {
+        res.send({ status: "success", message: "更新成功" });
+    };
 }
 
 export default new UsersController();
