@@ -45,9 +45,10 @@ class UsersController {
         if (!(await bcrypt.compare(password, user.password))) {
             throw new Error("密碼錯誤!");
         }
+        const { password: _, ...result } = user.toObject();
         const secret = process.env.JWT_SECRET as string;
         const token = jwt.sign({ id: user._id }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
-        res.send({ status: "success", message: "登入成功", token });
+        res.send({ status: "success", token, result });
     };
 
     /**
