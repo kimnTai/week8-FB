@@ -35,15 +35,7 @@ class Middleware {
      */
     checkSignUp = (req: Request, res: Response, next: NextFunction) => {
         const { name, email, password } = req.body;
-        if (!name || !email || !password) {
-            throw new Error("欄位未填寫正確");
-        }
-        if (!validator.isEmail(email)) {
-            throw new Error("Email 格式不正確");
-        }
-        if (!validator.isLength(password, { min: 8 })) {
-            throw new Error("password 長度應至少 8 碼以上");
-        }
+        this._checkValidator({ name, email, password });
         next();
     };
 
@@ -56,16 +48,35 @@ class Middleware {
      */
     checkSignIn = (req: Request, res: Response, next: NextFunction) => {
         const { email, password } = req.body;
-        if (!email || !password) {
-            throw new Error("欄位未填寫正確");
-        }
-        if (!validator.isEmail(email)) {
-            throw new Error("Email 格式不正確");
-        }
-        if (!validator.isLength(password, { min: 8 })) {
-            throw new Error("password 長度應至少 8 碼以上");
-        }
+        this._checkValidator({ email, password });
         next();
+    };
+
+    /**
+     * @description validator 驗證
+     * @param {{ [key: string]: string }} param
+     * @memberof Middleware
+     */
+    _checkValidator = (param: { [key: string]: string | undefined }) => {
+        for (const [key, value] of Object.entries(param)) {
+            if (!value) {
+                throw new Error("欄位未填寫正確");
+            }
+            switch (key) {
+                case "email":
+                    if (!validator.isEmail(value)) {
+                        throw new Error("Email 格式不正確");
+                    }
+                    break;
+                case "password":
+                    if (!validator.isLength(value, { min: 8 })) {
+                        throw new Error("password 長度應至少 8 碼以上");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     };
 }
 
