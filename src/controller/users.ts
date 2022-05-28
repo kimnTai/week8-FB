@@ -82,8 +82,14 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    updateProfile = (req: Request, res: Response) => {
-        res.send({ status: "success", message: "更新成功" });
+    updateProfile = async (req: Request, res: Response) => {
+        const { id, name, email, photo } = req.body;
+        const _result = await Model.Users.findByIdAndUpdate(id, { name, email, photo });
+        if (!_result) {
+            throw new Error("此 id 不存在");
+        }
+        const result = await Model.Users.findById(id);
+        res.send({ status: "success", message: "更新成功", result });
     };
 }
 
