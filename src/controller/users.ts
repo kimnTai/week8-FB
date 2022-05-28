@@ -36,7 +36,7 @@ class UsersController {
      */
     signIn = async (req: Request, res: Response): Promise<void> => {
         const { email, password } = req.body;
-        const user = await Model.Users.findOne({ email });
+        const user = await Model.Users.findOne({ email }).select("+password");
         if (!user) {
             throw new Error("此 Email 不存在!");
         }
