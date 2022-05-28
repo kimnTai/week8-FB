@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 import * as Model from "../model";
 
 class UsersController {
@@ -43,7 +45,9 @@ class UsersController {
         if (!(await bcrypt.compare(password, user.password))) {
             throw new Error("密碼錯誤!");
         }
-        res.send({ status: "success", message: "登入成功" });
+        const Secret = process.env.JWT_SECRET as string;
+        const token = jwt.sign({ email }, Secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
+        res.send({ status: "success", message: "登入成功", token });
     };
 
     /**
