@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler, Router } from "express";
+import validator from "validator";
 
 class Utils {
     /**
@@ -27,6 +28,47 @@ class Utils {
             }
         }
         return router;
+    };
+
+    /**
+     * @description validator 驗證
+     * @param {{ [key: string]: string }} param
+     * @memberof Middleware
+     */
+    checkValidator = (param: { [key: string]: string | undefined }) => {
+        for (const [key, value] of Object.entries(param)) {
+            if (!value) {
+                throw new Error("欄位未填寫正確");
+            }
+            switch (key) {
+                case "name":
+                    if (!validator.isLength(value, { min: 2 })) {
+                        throw new Error("name 至少 2 個字元以上");
+                    }
+                    break;
+                case "email":
+                    if (!validator.isEmail(value)) {
+                        throw new Error("Email 格式不正確");
+                    }
+                    break;
+                case "password":
+                    if (!validator.isLength(value, { min: 8 })) {
+                        throw new Error("密碼需至少 8 碼以上");
+                    }
+                    if (validator.isAlpha(value)) {
+                        throw new Error("密碼不能只有英文");
+                    }
+                    if (validator.isNumeric(value)) {
+                        throw new Error("密碼不能只有數字");
+                    }
+                    if (!validator.isAlphanumeric(value)) {
+                        throw new Error("密碼需至少 8 碼以上，並英數混合");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     };
 }
 
