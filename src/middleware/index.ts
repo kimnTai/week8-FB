@@ -76,6 +76,11 @@ class Middleware {
                 throw new Error("欄位未填寫正確");
             }
             switch (key) {
+                case "name":
+                    if (!validator.isLength(value, { min: 2 })) {
+                        throw new Error("name 至少 2 個字元以上");
+                    }
+                    break;
                 case "email":
                     if (!validator.isEmail(value)) {
                         throw new Error("Email 格式不正確");
