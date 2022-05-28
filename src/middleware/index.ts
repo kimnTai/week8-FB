@@ -79,8 +79,8 @@ class Middleware {
      * @memberof Middleware
      */
     isAuth = (req: Request, res: Response, next: NextFunction) => {
-        const { id, token } = req.body;
-        Utils.checkValidator({ id, token });
+        const { id, token, ...args } = req.body;
+        Utils.checkValidator({ id, token, ...args });
         const result = jwt.verify(token, process.env.JWT_SECRET as string);
         if (id !== (<any>result).id) {
             throw new Error("token 錯誤");
