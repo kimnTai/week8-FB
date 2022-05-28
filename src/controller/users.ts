@@ -45,6 +45,17 @@ class UsersController {
         }
         res.send({ status: "success", message: "登入成功" });
     };
+
+    /**
+     * @description 重設密碼
+     * @memberof UsersController
+     */
+    userUpdatePassword = async (req: Request, res: Response) => {
+        const { id, password: newPassword } = req.body;
+        const password = await bcrypt.hash(newPassword, 12);
+        await Model.Users.findByIdAndUpdate(id, { password });
+        res.send({ status: "success", message: "密碼重設成功" });
+    };
 }
 
 export default new UsersController();
