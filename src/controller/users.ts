@@ -12,32 +12,30 @@ class UsersController {
     };
 
     /**
-     * @description 使用者註冊
+     * @description 註冊
      * @param {Request} req
      * @param {Response} res
      * @memberof UsersController
      */
-    createUser = async (req: Request, res: Response): Promise<void> => {
+    signUp = async (req: Request, res: Response): Promise<void> => {
         const { name, email, password: originPassword } = req.body;
         if (await Model.Users.findOne({ email })) {
             throw new Error("此 Email 已被註冊!");
         }
         const password = await bcrypt.hash(originPassword, 12);
         const result = await Model.Users.create({ name, email, password });
+        (<any>result).password = undefined;
         res.send({ status: "success", result });
     };
 
     /**
-     * @description 使用者登入
+     * @description 登入
      * @param {Request} req
      * @param {Response} res
      * @memberof UsersController
      */
-    userSignIn = async (req: Request, res: Response): Promise<void> => {
+    signIn = async (req: Request, res: Response): Promise<void> => {
         const { email, password } = req.body;
-        if (!email || !password) {
-            throw new Error("格式錯誤");
-        }
         const user = await Model.Users.findOne({ email });
         if (!user) {
             throw new Error("此 Email 不存在!");

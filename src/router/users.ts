@@ -7,8 +7,8 @@ const router = Utils.catchAsyncRouter(express.Router());
 
 router.get("/", Controller.User.getUsers);
 
-router.post("/sign_up", middleware.checkSignUp, Controller.User.createUser);
+router.post("/sign_up", middleware.checkSignUp, Controller.User.signUp);
 
-router.post("/sign_in", Controller.User.userSignIn);
+router.post("/sign_in", middleware.checkSignIn, Controller.User.signIn);
 
 export default router;
