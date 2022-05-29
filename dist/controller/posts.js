@@ -112,7 +112,7 @@ var PostsController = (function () {
                     case 0:
                         _id = req.params.id;
                         _a = req.body, content = _a.content, type = _a.type, name = _a.name;
-                        return [4, Model.Posts.findOneAndUpdate({ _id: _id }, { content: content, type: type, name: name }, { new: true })];
+                        return [4, Model.Posts.findOneAndUpdate({ _id: _id }, { content: content, type: type, name: name }, { new: true, runValidators: true })];
                     case 1:
                         result = _b.sent();
                         if (!result) {
