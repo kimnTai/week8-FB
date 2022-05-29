@@ -14,8 +14,8 @@ class Middleware {
      */
     upload = (req: Request, res: Response, next: NextFunction) => {
         return multer({
-            // 限制上傳檔案的大小為 10 MB
-            limits: { fileSize: 10 * 1024 ** 2 },
+            // 限制上傳檔案的大小為 2 MB
+            limits: { fileSize: 2 * 1024 ** 2 },
             fileFilter: (req, file, callback) => {
                 // 只接受三種圖片格式
                 if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
