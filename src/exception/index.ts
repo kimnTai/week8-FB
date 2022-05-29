@@ -43,6 +43,9 @@ class Exception {
         if (err.type === "entity.parse.failed") {
             return res.status(400).send({ status: "error", message: err.type });
         }
+        if (err.name === "JsonWebTokenError") {
+            return res.status(400).send({ status: "error", message: err.message });
+        }
         // 開發模式回傳錯誤訊息
         if (process.env.NODE_ENV === "dev") {
             return res.status(400).json({ status: "error", message: err.message, err });
