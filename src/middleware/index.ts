@@ -86,7 +86,7 @@ class Middleware {
         const { userId, ...args } = req.body;
         Utils.checkValidator({ userId, ...args });
         if (userId !== (<any>result).userId) {
-            throw new Error("token 錯誤");
+            throw new Error("token 錯誤 userId 不一致");
         }
         next();
     };
