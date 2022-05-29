@@ -81,6 +81,7 @@ class Middleware {
             throw new Error("token 錯誤");
         }
         if (req.method === "GET") {
+            req.body.userId = (<any>result).userId;
             return next();
         }
         const { userId, ...args } = req.body;
