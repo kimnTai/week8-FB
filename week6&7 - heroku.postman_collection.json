@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "1195432b-f751-42e0-ba9d-020d72c6d683",
-		"name": "week6 - heroku",
+		"name": "week7 - heroku",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16994236"
 	},
@@ -314,7 +314,13 @@
 			"name": "檔案-圖片上傳",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "formdata",
 					"formdata": [
@@ -322,6 +328,11 @@
 							"key": "image",
 							"type": "file",
 							"src": []
+						},
+						{
+							"key": "userId",
+							"value": "628fad2f317a8b67c3bd6baa",
+							"type": "text"
 						}
 					]
 				},
