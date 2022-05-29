@@ -68,6 +68,7 @@ var Middleware = (function () {
                 throw new Error("token 錯誤");
             }
             if (req.method === "GET") {
+                req.body.userId = result.userId;
                 return next();
             }
             var _b = req.body, userId = _b.userId, args = __rest(_b, ["userId"]);
