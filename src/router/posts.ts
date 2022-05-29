@@ -1,12 +1,13 @@
 import express from "express";
 import * as Controller from "../controller";
 import Utils from "../utils";
+import { middleware } from "../middleware";
 
 const router = Utils.catchAsyncRouter(express.Router());
 
-router.get("/", Controller.Post.getPosts);
+router.get("/", middleware.isAuth, Controller.Post.getPosts);
 
-router.post("/", Controller.Post.createPosts);
+router.post("/", middleware.isAuth, Controller.Post.createPosts);
 
 router.delete("/:id", Controller.Post.deleteById);
 
