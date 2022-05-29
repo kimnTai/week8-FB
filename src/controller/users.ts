@@ -46,7 +46,7 @@ class UsersController {
         }
         const { password: _, ...result } = user.toObject();
         const secret = process.env.JWT_SECRET as string;
-        const token = jwt.sign({ id: user._id }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
+        const token = jwt.sign({ userId: user._id }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
         res.send({ status: "success", token, result });
     };
 
@@ -56,7 +56,7 @@ class UsersController {
      */
     updatePassword = async (req: Request, res: Response) => {
         const password = await bcrypt.hash(req.body.password, 12);
-        if (!(await Model.Users.findByIdAndUpdate(req.body.id, { password }))) {
+        if (!(await Model.Users.findByIdAndUpdate(req.body.userId, { password }))) {
             throw new Error("此 id 不存在");
         }
         res.send({ status: "success", message: "密碼重設成功" });
@@ -69,7 +69,7 @@ class UsersController {
      * @memberof UsersController
      */
     getProfile = async (req: Request, res: Response) => {
-        const result = await Model.Users.findById(req.body.id);
+        const result = await Model.Users.findById(req.body.userId);
         if (!result) {
             throw new Error("此 id 不存在");
         }
@@ -83,12 +83,12 @@ class UsersController {
      * @memberof UsersController
      */
     updateProfile = async (req: Request, res: Response) => {
-        const { id, name, email, photo } = req.body;
-        const _result = await Model.Users.findByIdAndUpdate(id, { name, email, photo });
+        const { userId, name, email, photo } = req.body;
+        const _result = await Model.Users.findByIdAndUpdate(userId, { name, email, photo });
         if (!_result) {
             throw new Error("此 id 不存在");
         }
-        const result = await Model.Users.findById(id);
+        const result = await Model.Users.findById(userId);
         res.send({ status: "success", message: "更新成功", result });
     };
 }
