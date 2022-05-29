@@ -35,7 +35,7 @@ var Middleware = (function () {
         var _this = this;
         this.upload = function (req, res, next) {
             return (0, multer_1.default)({
-                limits: { fileSize: 10 * Math.pow(1024, 2) },
+                limits: { fileSize: 2 * Math.pow(1024, 2) },
                 fileFilter: function (req, file, callback) {
                     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
                         callback(new Error("請上傳正確的檔案格式"));

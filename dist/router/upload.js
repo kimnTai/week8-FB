@@ -27,5 +27,5 @@ var Controller = __importStar(require("../controller"));
 var utils_1 = __importDefault(require("../utils"));
 var middleware_1 = require("../middleware");
 var router = utils_1.default.catchAsyncRouter(express_1.default.Router());
-router.post("/", middleware_1.middleware.upload, Controller.Image.getImage);
+router.post("/", middleware_1.middleware.upload, middleware_1.middleware.isAuth, Controller.Image.getImage);
 exports.default = router;

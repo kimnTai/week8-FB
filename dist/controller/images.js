@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var form_data_1 = __importDefault(require("form-data"));
 var axios_1 = __importDefault(require("axios"));
+require("dotenv/config");
 var ImageController = (function () {
     function ImageController() {
         var _this = this;
@@ -54,8 +55,9 @@ var ImageController = (function () {
                         }
                         formData = new form_data_1.default();
                         formData.append("image", req.file.buffer);
+                        formData.append("album", process.env.IMGUR_ALBUM_ID);
                         return [4, axios_1.default.post("https://api.imgur.com/3/image", formData, {
-                                headers: { Authorization: "Client-ID 62004dc8f2239f1" },
+                                headers: { Authorization: "Bearer " + process.env.IMGUR_REFRESH_TOKEN },
                             })];
                     case 1:
                         data = (_a.sent()).data;
