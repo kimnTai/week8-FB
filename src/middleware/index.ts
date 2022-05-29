@@ -62,13 +62,9 @@ class Middleware {
      * @memberof Middleware
      */
     checkUpdatePassword = (req: Request, res: Response, next: NextFunction) => {
-        const { id, password, token } = req.body;
-        Utils.checkValidator({ id, password, token });
-        const result = jwt.verify(token, process.env.JWT_SECRET as string);
-        if (id !== (<any>result).id) {
-            throw new Error("token 錯誤");
-        }
-        next();
+        const { id, password } = req.body;
+        Utils.checkValidator({ id, password });
+        this.isAuth(req, res, next);
     };
 
     /**
@@ -79,7 +75,8 @@ class Middleware {
      * @memberof Middleware
      */
     isAuth = (req: Request, res: Response, next: NextFunction) => {
-        const { id, token, ...args } = req.body;
+        const { id, ...args } = req.body;
+        const token = req.headers.authorization?.replace("Bearer ", "") as string;
         Utils.checkValidator({ id, token, ...args });
         const result = jwt.verify(token, process.env.JWT_SECRET as string);
         if (id !== (<any>result).id) {
