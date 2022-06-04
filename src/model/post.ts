@@ -8,7 +8,6 @@ interface IPost {
     createdAt: Date;
     content: string;
     likes: mongoose.Types.ObjectId[];
-    comments: number;
 }
 
 const postSchema = new mongoose.Schema<IPost>(
@@ -29,10 +28,15 @@ const postSchema = new mongoose.Schema<IPost>(
                 ref: "user",
             },
         ],
-        comments: { type: Number, default: 0 },
     },
-    { versionKey: false }
+    { versionKey: false, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+postSchema.virtual("comments", {
+    ref: "comment",
+    foreignField: "postId",
+    localField: "_id",
+});
 
 const Posts = mongoose.model("post", postSchema);
 
