@@ -24,12 +24,14 @@ const userSchema = new mongoose.Schema<IUser>(
         photo: { type: String, default: "https://i.imgur.com/tPmUQVM.png" },
         followers: [
             {
+                _id: false,
                 user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
                 createdAt: { type: Date, default: Date.now },
             },
         ],
         following: [
             {
+                _id: false,
                 user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
                 createdAt: { type: Date, default: Date.now },
             },
