@@ -53,10 +53,10 @@ class PostsController {
      * @memberof PostsController
      */
     editPosts = async (req: Request, res: Response): Promise<void> => {
-        const { id: _id } = req.params;
+        const { postId } = req.params;
         const { content, type, name } = req.body;
         const result = await Model.Posts.findOneAndUpdate(
-            { _id },
+            { _id: postId },
             { content, type, name },
             { new: true, runValidators: true }
         );
@@ -74,8 +74,8 @@ class PostsController {
      * @memberof PostsController
      */
     deleteById = async (req: Request, res: Response): Promise<void> => {
-        const { id } = req.params;
-        if (!(await Model.Posts.findByIdAndDelete(id))) {
+        const { postId } = req.params;
+        if (!(await Model.Posts.findByIdAndDelete(postId))) {
             throw new Error("無此貼文 id");
         }
         res.send({ status: "success", message: "刪除成功" });

@@ -9,9 +9,9 @@ router.get("/", middleware.isAuth, Controller.Post.getPosts);
 
 router.post("/", middleware.isAuth, Controller.Post.createPosts);
 
-router.delete("/:id", Controller.Post.deleteById);
+router.delete("/:postId", Controller.Post.deleteById);
 
-router.patch("/:id", Controller.Post.editPosts);
+router.patch("/:postId", Controller.Post.editPosts);
 
 router.post("/:postId/like", (req, res) => {
     res.send({ status: "success", message: "like" });
