@@ -80,6 +80,38 @@ class PostsController {
         }
         res.send({ status: "success", message: "刪除成功" });
     };
+
+    /**
+     * @description 新增貼文讚
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof PostsController
+     */
+    addLike = async (req: Request, res: Response): Promise<void> => {
+        const { postId } = req.params;
+        const result = await Model.Posts.findByIdAndUpdate(
+            postId,
+            { $addToSet: { likes: req.body.userId } },
+            { new: true }
+        );
+        res.send({ status: "success", result });
+    };
+
+    /**
+     * @description 刪除貼文讚
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof PostsController
+     */
+    deleteLike = async (req: Request, res: Response): Promise<void> => {
+        const { postId } = req.params;
+        const result = await Model.Posts.findByIdAndUpdate(
+            postId,
+            { $pull: { likes: req.body.userId } },
+            { new: true }
+        );
+        res.send({ status: "success", result });
+    };
 }
 
 export default new PostsController();

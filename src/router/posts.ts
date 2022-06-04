@@ -13,13 +13,9 @@ router.delete("/:postId", Controller.Post.deleteById);
 
 router.patch("/:postId", Controller.Post.editPosts);
 
-router.post("/:postId/like", (req, res) => {
-    res.send({ status: "success", message: "like" });
-});
+router.post("/:postId/like", middleware.isAuth, Controller.Post.addLike);
 
-router.delete("/:postId/unlike", (req, res) => {
-    res.send({ status: "success", message: "unlike" });
-});
+router.delete("/:postId/unlike", middleware.isAuth, Controller.Post.deleteLike);
 
 router.delete("/:postId/comment", (req, res) => {
     res.send({ status: "success", message: "comment" });
