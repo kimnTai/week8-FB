@@ -23,6 +23,7 @@ const commentSchema = new mongoose.Schema<IComment>(
     { versionKey: false, timestamps: true }
 );
 
+// 前置查詢
 commentSchema.pre(/^find/, function (next) {
     this.populate({ path: "userId", select: "_id name createdAt" });
     next();

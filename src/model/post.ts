@@ -32,6 +32,7 @@ const postSchema = new mongoose.Schema<IPost>(
     { versionKey: false, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
+// populate 時觸發關聯
 postSchema.virtual("comments", {
     ref: "comment",
     foreignField: "postId",
