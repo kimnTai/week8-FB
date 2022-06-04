@@ -91,6 +91,20 @@ class UsersController {
         const result = await Model.Users.findById(userId);
         res.send({ status: "success", message: "更新成功", result });
     };
+
+    /**
+     * @description 個人按讚貼文
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getLikeList = async (req: Request, res: Response) => {
+        const result = await Model.Posts.find({ likes: { $in: [req.body.userId] } }).populate({
+            path: "user",
+            select: "_id name",
+        });
+        res.send({ status: "success", result });
+    };
 }
 
 export default new UsersController();

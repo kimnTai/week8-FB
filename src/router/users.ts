@@ -17,6 +17,8 @@ router.get("/profile", middleware.isAuth, Controller.User.getProfile);
 
 router.patch("/profile", middleware.isAuth, Controller.User.updateProfile);
 
+router.get("/getLikeList", middleware.isAuth, Controller.User.getLikeList);
+
 router.post("/:userId/follow", (req, res) => {
     const { userId } = req.params;
     res.send({ status: "success", message: "follow", userId });
@@ -25,10 +27,6 @@ router.post("/:userId/follow", (req, res) => {
 router.delete("/:userId/unfollow", (req, res) => {
     const { userId } = req.params;
     res.send({ status: "success", message: "unfollow", userId });
-});
-
-router.get("/getLikeList", (req, res) => {
-    res.send({ status: "success", message: "getLikeList" });
 });
 
 router.get("/following", (req, res) => {
