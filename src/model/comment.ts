@@ -2,19 +2,19 @@ import mongoose from "mongoose";
 
 interface IComment {
     comment: string;
-    user: mongoose.Types.ObjectId;
-    post: mongoose.Types.ObjectId;
+    userId: mongoose.Types.ObjectId;
+    postId: mongoose.Types.ObjectId;
 }
 
 const commentSchema = new mongoose.Schema<IComment>(
     {
         comment: { type: String, required: [true, "comment 未填寫"] },
-        user: {
+        userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "user",
             required: [true, "貼文 UserID 未填寫"],
         },
-        post: {
+        postId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "post",
             required: [true, "貼文 ID 未填寫"],
@@ -24,7 +24,7 @@ const commentSchema = new mongoose.Schema<IComment>(
 );
 
 commentSchema.pre(/^find/, function (next) {
-    this.populate({ path: "user", select: "_id name createdAt" });
+    this.populate({ path: "userId", select: "_id name createdAt" });
     next();
 });
 

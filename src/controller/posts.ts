@@ -134,7 +134,7 @@ class PostsController {
     addComment = async (req: Request, res: Response): Promise<void> => {
         const { postId } = req.params;
         const { userId, comment } = req.body;
-        const result = await Model.Comments.create({ user: userId, post: postId, comment });
+        const result = await Model.Comments.create({ userId, postId, comment });
         res.send({ status: "success", result });
     };
 }
