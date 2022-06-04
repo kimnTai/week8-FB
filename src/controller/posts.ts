@@ -13,7 +13,7 @@ class PostsController {
         const { sort, keyword } = req.query;
         const result = await Model.Posts.find(keyword ? { content: new RegExp(`${keyword}`) } : {})
             .populate({ path: "user", select: "name photo" })
-            .populate({ path: "comments", select: "userId comment" })
+            .populate({ path: "comments", select: "createdAt -_id -postId" })
             .sort(`${sort === "new" ? "-" : ""}createdAt`);
         res.send({ status: "success", result });
     };
