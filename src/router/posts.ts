@@ -17,9 +17,7 @@ router.post("/:postId/like", middleware.isAuth, Controller.Post.addLike);
 
 router.delete("/:postId/unlike", middleware.isAuth, Controller.Post.deleteLike);
 
-router.delete("/:postId/comment", (req, res) => {
-    res.send({ status: "success", message: "comment" });
-});
+router.post("/:postId/comment", middleware.isAuth, Controller.Post.addComment);
 
 router.get("/user/:userId", middleware.isAuth, Controller.Post.getByUserId);
 

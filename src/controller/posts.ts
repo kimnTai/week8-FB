@@ -124,6 +124,19 @@ class PostsController {
         const result = await Model.Posts.find({ user: userId });
         res.send({ status: "success", result });
     };
+
+    /**
+     * @description 新增貼文留言
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof PostsController
+     */
+    addComment = async (req: Request, res: Response): Promise<void> => {
+        const { postId } = req.params;
+        const { userId, comment } = req.body;
+        const result = await Model.Comments.create({ user: userId, post: postId, comment });
+        res.send({ status: "success", result });
+    };
 }
 
 export default new PostsController();
