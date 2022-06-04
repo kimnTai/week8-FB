@@ -7,7 +7,7 @@ interface IPost {
     image: string;
     createdAt: Date;
     content: string;
-    likes: number;
+    likes: mongoose.Types.ObjectId[];
     comments: number;
 }
 
@@ -23,7 +23,12 @@ const postSchema = new mongoose.Schema<IPost>(
         image: { type: String, required: [true, "貼文圖片 image 未填寫"] },
         createdAt: { type: Date, default: Date.now },
         content: { type: String, required: [true, "content 未填寫"] },
-        likes: { type: Number, default: 0 },
+        likes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "user",
+            },
+        ],
         comments: { type: Number, default: 0 },
     },
     { versionKey: false }
