@@ -21,8 +21,6 @@ router.delete("/:postId/comment", (req, res) => {
     res.send({ status: "success", message: "comment" });
 });
 
-router.get("/user/:userId", (req, res) => {
-    res.send({ status: "success", message: "userId" });
-});
+router.get("/user/:userId", middleware.isAuth, Controller.Post.getByUserId);
 
 export default router;

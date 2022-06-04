@@ -112,6 +112,18 @@ class PostsController {
         );
         res.send({ status: "success", result });
     };
+
+    /**
+     * @description 取得個人貼文列表
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof PostsController
+     */
+    getByUserId = async (req: Request, res: Response): Promise<void> => {
+        const { userId } = req.params;
+        const result = await Model.Posts.find({ user: userId });
+        res.send({ status: "success", result });
+    };
 }
 
 export default new PostsController();
