@@ -11,7 +11,7 @@ interface IUser {
     email: string;
     password: string;
     photo: string;
-    follower: IFollow[];
+    followers: IFollow[];
     following: IFollow[];
 }
 
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema<IUser>(
         email: { type: String, required: [true, "email 未填寫"] },
         password: { type: String, required: [true, "password 未填寫"], select: false },
         photo: { type: String, default: "https://i.imgur.com/tPmUQVM.png" },
-        follower: [
+        followers: [
             {
                 user: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
                 createdAt: { type: Date, default: Date.now },
