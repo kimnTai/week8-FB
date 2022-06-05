@@ -35,18 +35,6 @@ class PostsController {
     };
 
     /**
-     * @description 刪除所有資料
-     * @param {Request} req
-     * @param {Response} res
-     * @return {*}  {Promise<void>}
-     * @memberof PostsController
-     */
-    deleteAll = async (req: Request, res: Response): Promise<void> => {
-        await Model.Posts.deleteMany({});
-        res.send({ status: "success", message: "刪除成功" });
-    };
-
-    /**
      * @description 編輯單筆資料
      * @param {Request} req
      * @param {Response} res
