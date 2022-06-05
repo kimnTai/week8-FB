@@ -93,6 +93,4 @@ class Middleware {
     };
 }
 
-const middleware = new Middleware();
-
-export { middleware };
+export default new Middleware();

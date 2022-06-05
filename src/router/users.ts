@@ -1,28 +1,28 @@
 import express from "express";
 import * as Controller from "../controller";
-import { middleware } from "../middleware";
+import Middleware from "../middleware";
 import Utils from "../utils";
 
 const router = Utils.catchAsyncRouter(express.Router());
 
 router.get("/", Controller.User.getUsers);
 
-router.post("/sign_up", middleware.checkSignUp, Controller.User.signUp);
+router.post("/sign_up", Middleware.checkSignUp, Controller.User.signUp);
 
-router.post("/sign_in", middleware.checkSignIn, Controller.User.signIn);
+router.post("/sign_in", Middleware.checkSignIn, Controller.User.signIn);
 
-router.post("/updatePassword", middleware.checkUpdatePassword, Controller.User.updatePassword);
+router.post("/updatePassword", Middleware.checkUpdatePassword, Controller.User.updatePassword);
 
-router.get("/profile", middleware.isAuth, Controller.User.getProfile);
+router.get("/profile", Middleware.isAuth, Controller.User.getProfile);
 
-router.patch("/profile", middleware.isAuth, Controller.User.updateProfile);
+router.patch("/profile", Middleware.isAuth, Controller.User.updateProfile);
 
-router.get("/getLikeList", middleware.isAuth, Controller.User.getLikeList);
+router.get("/getLikeList", Middleware.isAuth, Controller.User.getLikeList);
 
-router.post("/:followingId/follow", middleware.isAuth, Controller.User.addFollow);
+router.post("/:followingId/follow", Middleware.isAuth, Controller.User.addFollow);
 
-router.delete("/:followingId/unfollow", middleware.isAuth, Controller.User.removeFollow);
+router.delete("/:followingId/unfollow", Middleware.isAuth, Controller.User.removeFollow);
 
-router.get("/following", middleware.isAuth, Controller.User.getFollowList);
+router.get("/following", Middleware.isAuth, Controller.User.getFollowList);
 
 export default router;

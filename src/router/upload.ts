@@ -1,10 +1,10 @@
 import express from "express";
 import * as Controller from "../controller";
 import Utils from "../utils";
-import { middleware } from "../middleware";
+import Middleware from "../middleware";
 
 const router = Utils.catchAsyncRouter(express.Router());
 
-router.post("/", middleware.upload, middleware.isAuth, Controller.Image.getImage);
+router.post("/", Middleware.upload, Middleware.isAuth, Controller.Image.getImage);
 
 export default router;
