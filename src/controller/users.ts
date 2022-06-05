@@ -105,6 +105,60 @@ class UsersController {
         });
         res.send({ status: "success", result });
     };
+
+    /**
+     * @description 新增追蹤
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    addFollow = async (req: Request, res: Response) => {
+        const { userId } = req.body;
+        const { followingId } = req.params;
+        if (userId === followingId) {
+            throw new Error("您無法追蹤自己");
+        }
+        await Model.Users.updateOne(
+            { _id: followingId, "followers.user": { $ne: userId } },
+            { $addToSet: { followers: { user: userId } } }
+        );
+        await Model.Users.updateOne(
+            { _id: userId, "following.user": { $ne: followingId } },
+            { $addToSet: { following: { user: followingId } } }
+        );
+        res.send({ status: "success", message: "您已成功追蹤！" });
+    };
+
+    /**
+     * @description 移除追蹤
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    removeFollow = async (req: Request, res: Response) => {
+        const { userId } = req.body;
+        const { followingId } = req.params;
+        if (userId === followingId) {
+            throw new Error("您無法取消追蹤自己");
+        }
+        await Model.Users.updateOne({ _id: userId }, { $pull: { following: { user: followingId } } });
+        await Model.Users.updateOne({ _id: followingId }, { $pull: { followers: { user: userId } } });
+        res.send({ status: "success", message: "您已成功取消追蹤！" });
+    };
+
+    /**
+     * @description 取得追蹤清單
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getFollowList = async (req: Request, res: Response) => {
+        const result = await Model.Users.findById(req.body.userId).populate({
+            path: "following.user",
+            select: "name photo",
+        });
+        res.send({ status: "success", result });
+    };
 }
 
 export default new UsersController();
