@@ -99,6 +99,9 @@ class PostsController {
             { $pull: { likes: req.body.userId } },
             { new: true }
         );
+        if (!result) {
+            throw new Error("無此貼文 id");
+        }
         res.send({ status: "success", result });
     };
 
