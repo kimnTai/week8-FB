@@ -48,6 +48,4 @@ class Exception {
     };
 }
 
-const exception = new Exception();
-
-export { exception };
+export default new Exception();
