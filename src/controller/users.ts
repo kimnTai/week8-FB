@@ -83,8 +83,8 @@ class UsersController {
      * @memberof UsersController
      */
     updateProfile = async (req: Request, res: Response) => {
-        const { userId, name, email, photo } = req.body;
-        const _result = await Model.Users.findByIdAndUpdate(userId, { name, email, photo });
+        const { userId, name, sex, photo } = req.body;
+        const _result = await Model.Users.findByIdAndUpdate(userId, { name, sex, photo });
         if (!_result) {
             throw new Error("此 id 不存在");
         }
