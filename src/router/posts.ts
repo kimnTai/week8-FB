@@ -7,9 +7,9 @@ const router = Utils.catchAsyncRouter(express.Router());
 
 router.get("/", middleware.isAuth, Controller.Post.getPosts);
 
-router.post("/", middleware.isAuth, Controller.Post.createPosts);
+router.get("/:postId", middleware.isAuth, Controller.Post.getById);
 
-router.delete("/:postId", Controller.Post.deleteById);
+router.post("/", middleware.isAuth, Controller.Post.createPosts);
 
 router.patch("/:postId", Controller.Post.editPosts);
 

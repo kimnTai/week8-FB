@@ -19,6 +19,21 @@ class PostsController {
     };
 
     /**
+     * @description 取得單一貼文
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof PostsController
+     */
+    getById = async (req: Request, res: Response): Promise<void> => {
+        const { postId } = req.params;
+        const result = await Model.Posts.findById(postId);
+        if (!result) {
+            throw new Error("無此貼文 id");
+        }
+        res.send({ status: "success", result });
+    };
+
+    /**
      * @description 新增單筆資料
      * @param {Request} req
      * @param {Response} res
@@ -53,21 +68,6 @@ class PostsController {
             throw new Error("無此貼文 id");
         }
         res.send({ status: "success", result });
-    };
-
-    /**
-     * @description 刪除單筆資料
-     * @param {Request} req
-     * @param {Response} res
-     * @return {*}  {Promise<void>}
-     * @memberof PostsController
-     */
-    deleteById = async (req: Request, res: Response): Promise<void> => {
-        const { postId } = req.params;
-        if (!(await Model.Posts.findByIdAndDelete(postId))) {
-            throw new Error("無此貼文 id");
-        }
-        res.send({ status: "success", message: "刪除成功" });
     };
 
     /**
