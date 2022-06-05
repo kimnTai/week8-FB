@@ -46,6 +46,11 @@ class Utils {
                         throw new Error("name 至少 2 個字元以上");
                     }
                     break;
+                case "sex":
+                    if (value !== "male" && value !== "female") {
+                        throw new Error("sex 只能是 male 或 female");
+                    }
+                    break;
                 case "email":
                     if (!validator.isEmail(value)) {
                         throw new Error("Email 格式不正確");
