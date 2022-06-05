@@ -3,13 +3,13 @@ import * as Model from "../model";
 
 class PostsController {
     /**
-     * @description 取得所有資料
+     * @description 取得所有貼文
      * @param {Request} req
      * @param {Response} res
      * @return {*}  {Promise<void>}
      * @memberof PostsController
      */
-    getPosts = async (req: Request, res: Response): Promise<void> => {
+    getAll = async (req: Request, res: Response): Promise<void> => {
         const { sort, keyword } = req.query;
         const result = await Model.Posts.find(keyword ? { content: new RegExp(`${keyword}`) } : {})
             .populate({ path: "user", select: "name photo" })
@@ -34,13 +34,13 @@ class PostsController {
     };
 
     /**
-     * @description 新增單筆資料
+     * @description 新增單一貼文
      * @param {Request} req
      * @param {Response} res
      * @return {*}  {Promise<void>}
      * @memberof PostsController
      */
-    createPosts = async (req: Request, res: Response): Promise<void> => {
+    addOne = async (req: Request, res: Response): Promise<void> => {
         const { content, type, userId, image } = req.body;
         if (!(await Model.Users.findById(userId))) {
             throw new Error("無此使用者 id");
@@ -50,13 +50,13 @@ class PostsController {
     };
 
     /**
-     * @description 編輯單筆資料
+     * @description 編輯單一貼文
      * @param {Request} req
      * @param {Response} res
      * @return {*}  {Promise<void>}
      * @memberof PostsController
      */
-    editPosts = async (req: Request, res: Response): Promise<void> => {
+    editOne = async (req: Request, res: Response): Promise<void> => {
         const { postId } = req.params;
         const { content, type, name } = req.body;
         const result = await Model.Posts.findOneAndUpdate(

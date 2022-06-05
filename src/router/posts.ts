@@ -5,13 +5,13 @@ import { middleware } from "../middleware";
 
 const router = Utils.catchAsyncRouter(express.Router());
 
-router.get("/", middleware.isAuth, Controller.Post.getPosts);
+router.get("/", middleware.isAuth, Controller.Post.getAll);
 
 router.get("/:postId", middleware.isAuth, Controller.Post.getById);
 
-router.post("/", middleware.isAuth, Controller.Post.createPosts);
+router.post("/", middleware.isAuth, Controller.Post.addOne);
 
-router.patch("/:postId", Controller.Post.editPosts);
+router.patch("/:postId", Controller.Post.editOne);
 
 router.post("/:postId/like", middleware.isAuth, Controller.Post.addLike);
 
