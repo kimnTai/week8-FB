@@ -11,7 +11,7 @@ router.get("/:postId", middleware.isAuth, Controller.Post.getById);
 
 router.post("/", middleware.isAuth, Controller.Post.addOne);
 
-router.patch("/:postId", Controller.Post.editOne);
+router.patch("/:postId", middleware.isAuth, Controller.Post.editOne);
 
 router.post("/:postId/like", middleware.isAuth, Controller.Post.addLike);
 
