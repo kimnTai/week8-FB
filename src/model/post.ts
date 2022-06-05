@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface IPost {
+interface IPost extends mongoose.Document {
     user: mongoose.Types.ObjectId;
     image: string;
     content: string;

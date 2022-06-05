@@ -5,7 +5,7 @@ interface IFollow {
     createdAt: Date;
 }
 
-interface IUser {
+interface IUser extends mongoose.Document {
     name: string;
     sex: string;
     email: string;
