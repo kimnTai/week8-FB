@@ -59,7 +59,7 @@ var Model = __importStar(require("../model"));
 var PostsController = (function () {
     function PostsController() {
         var _this = this;
-        this.getPosts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAll = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, sort, keyword, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -67,6 +67,7 @@ var PostsController = (function () {
                         _a = req.query, sort = _a.sort, keyword = _a.keyword;
                         return [4, Model.Posts.find(keyword ? { content: new RegExp("" + keyword) } : {})
                                 .populate({ path: "user", select: "name photo" })
+                                .populate({ path: "comments", select: "createdAt -_id -postId" })
                                 .sort((sort === "new" ? "-" : "") + "createdAt")];
                     case 1:
                         result = _b.sent();
@@ -75,18 +76,35 @@ var PostsController = (function () {
                 }
             });
         }); };
-        this.createPosts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, content, type, userId, image, result;
+        this.getById = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var postId, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postId = req.params.postId;
+                        return [4, Model.Posts.findById(postId)];
+                    case 1:
+                        result = _a.sent();
+                        if (!result) {
+                            throw new Error("無此貼文 id");
+                        }
+                        res.send({ status: "success", result: result });
+                        return [2];
+                }
+            });
+        }); };
+        this.addOne = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, content, userId, image, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _a = req.body, content = _a.content, type = _a.type, userId = _a.userId, image = _a.image;
+                        _a = req.body, content = _a.content, userId = _a.userId, image = _a.image;
                         return [4, Model.Users.findById(userId)];
                     case 1:
                         if (!(_b.sent())) {
                             throw new Error("無此使用者 id");
                         }
-                        return [4, Model.Posts.create({ content: content, type: type, user: userId, image: image })];
+                        return [4, Model.Posts.create({ content: content, user: userId, image: image })];
                     case 2:
                         result = _b.sent();
                         res.send({ status: "success", result: result });
@@ -94,25 +112,14 @@ var PostsController = (function () {
                 }
             });
         }); };
-        this.deleteAll = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4, Model.Posts.deleteMany({})];
-                    case 1:
-                        _a.sent();
-                        res.send({ status: "success", message: "刪除成功" });
-                        return [2];
-                }
-            });
-        }); };
-        this.editPosts = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _id, _a, content, type, name, result;
+        this.editOne = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var postId, _a, content, name, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _id = req.params.id;
-                        _a = req.body, content = _a.content, type = _a.type, name = _a.name;
-                        return [4, Model.Posts.findOneAndUpdate({ _id: _id }, { content: content, type: type, name: name }, { new: true, runValidators: true })];
+                        postId = req.params.postId;
+                        _a = req.body, content = _a.content, name = _a.name;
+                        return [4, Model.Posts.findOneAndUpdate({ _id: postId }, { content: content, name: name }, { new: true, runValidators: true })];
                     case 1:
                         result = _b.sent();
                         if (!result) {
@@ -123,18 +130,67 @@ var PostsController = (function () {
                 }
             });
         }); };
-        this.deleteById = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id;
+        this.addLike = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var postId, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = req.params.id;
-                        return [4, Model.Posts.findByIdAndDelete(id)];
+                        postId = req.params.postId;
+                        return [4, Model.Posts.findByIdAndUpdate(postId, { $addToSet: { likes: req.body.userId } }, { new: true })];
                     case 1:
-                        if (!(_a.sent())) {
+                        result = _a.sent();
+                        res.send({ status: "success", result: result });
+                        return [2];
+                }
+            });
+        }); };
+        this.deleteLike = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var postId, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        postId = req.params.postId;
+                        return [4, Model.Posts.findByIdAndUpdate(postId, { $pull: { likes: req.body.userId } }, { new: true })];
+                    case 1:
+                        result = _a.sent();
+                        if (!result) {
                             throw new Error("無此貼文 id");
                         }
-                        res.send({ status: "success", message: "刪除成功" });
+                        res.send({ status: "success", result: result });
+                        return [2];
+                }
+            });
+        }); };
+        this.getByUserId = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.params.userId;
+                        return [4, Model.Posts.find({ user: userId })];
+                    case 1:
+                        result = _a.sent();
+                        res.send({ status: "success", result: result });
+                        return [2];
+                }
+            });
+        }); };
+        this.addComment = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var postId, _a, userId, comment, result;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        postId = req.params.postId;
+                        return [4, Model.Posts.findById(postId)];
+                    case 1:
+                        if (!(_b.sent())) {
+                            throw new Error("無此貼文 id");
+                        }
+                        _a = req.body, userId = _a.userId, comment = _a.comment;
+                        return [4, Model.Comments.create({ userId: userId, postId: postId, comment: comment })];
+                    case 2:
+                        result = _b.sent();
+                        res.send({ status: "success", result: result });
                         return [2];
                 }
             });

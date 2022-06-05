@@ -51,6 +51,11 @@ var Utils = (function () {
                             throw new Error("name 至少 2 個字元以上");
                         }
                         break;
+                    case "sex":
+                        if (value !== "male" && value !== "female") {
+                            throw new Error("sex 只能是 male 或 female");
+                        }
+                        break;
                     case "email":
                         if (!validator_1.default.isEmail(value)) {
                             throw new Error("Email 格式不正確");
@@ -68,6 +73,11 @@ var Utils = (function () {
                         }
                         if (!validator_1.default.isAlphanumeric(value)) {
                             throw new Error("密碼需至少 8 碼以上，並英數混合");
+                        }
+                        break;
+                    case "image":
+                        if (!validator_1.default.isURL(value, { protocols: ["https"] })) {
+                            throw new Error("image 格式不正確");
                         }
                         break;
                     default:
