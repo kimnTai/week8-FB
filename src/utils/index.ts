@@ -70,6 +70,11 @@ class Utils {
                         throw new Error("密碼需至少 8 碼以上，並英數混合");
                     }
                     break;
+                case "image":
+                    if (!validator.isURL(value, { protocols: ["https"] })) {
+                        throw new Error("image 格式不正確");
+                    }
+                    break;
                 default:
                     break;
             }
