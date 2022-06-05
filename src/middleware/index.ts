@@ -19,7 +19,7 @@ class Middleware {
             fileFilter: (req, file, callback) => {
                 // 只接受三種圖片格式
                 if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-                    callback(new Error("請上傳正確的檔案格式"));
+                    callback(new Error("圖片格式只接受 jpg、jpeg、png"));
                     return;
                 }
                 // 若接受該檔案，呼叫 cb() 並帶入 true
