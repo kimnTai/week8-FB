@@ -7,7 +7,7 @@ class Utils {
      * @param {RequestHandler} func
      * @memberof Utils
      */
-    catchAsync = (func: RequestHandler) => {
+    catchAsync = (func: RequestHandler): RequestHandler => {
         return (req: Request, res: Response, next: NextFunction) => {
             Promise.resolve(func(req, res, next)).catch(next);
         };
@@ -18,7 +18,7 @@ class Utils {
      * @param {Router} router
      * @memberof Utils
      */
-    catchAsyncRouter = (router: Router) => {
+    catchAsyncRouter = (router: Router): Router => {
         for (const key in router) {
             if (["get", "post", "delete", "patch"].includes(key)) {
                 const method = (<any>router)[key];
@@ -35,7 +35,7 @@ class Utils {
      * @param {{ [key: string]: string }} param
      * @memberof Middleware
      */
-    checkValidator = (param: { [key: string]: string | undefined }) => {
+    checkValidator = (param: { [key: string]: string | undefined }): void => {
         for (const [key, value] of Object.entries(param)) {
             if (!value) {
                 throw new Error("欄位未填寫正確");

@@ -54,7 +54,7 @@ class UsersController {
      * @description 重設密碼
      * @memberof UsersController
      */
-    updatePassword = async (req: Request, res: Response) => {
+    updatePassword = async (req: Request, res: Response): Promise<void> => {
         const password = await bcrypt.hash(req.body.password, 12);
         if (!(await Model.Users.findByIdAndUpdate(req.body.userId, { password }))) {
             throw new Error("此 id 不存在");
@@ -68,7 +68,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    getProfile = async (req: Request, res: Response) => {
+    getProfile = async (req: Request, res: Response): Promise<void> => {
         const result = await Model.Users.findById(req.body.userId);
         if (!result) {
             throw new Error("此 id 不存在");
@@ -82,7 +82,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    updateProfile = async (req: Request, res: Response) => {
+    updateProfile = async (req: Request, res: Response): Promise<void> => {
         const { userId, name, sex, photo } = req.body;
         const _result = await Model.Users.findByIdAndUpdate(userId, { name, sex, photo });
         if (!_result) {
@@ -98,7 +98,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    getLikeList = async (req: Request, res: Response) => {
+    getLikeList = async (req: Request, res: Response): Promise<void> => {
         const result = await Model.Posts.find({ likes: { $in: [req.body.userId] } }).populate({
             path: "user",
             select: "_id name",
@@ -112,7 +112,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    addFollow = async (req: Request, res: Response) => {
+    addFollow = async (req: Request, res: Response): Promise<void> => {
         const { userId } = req.body;
         const { followingId } = req.params;
         if (userId === followingId) {
@@ -137,7 +137,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    removeFollow = async (req: Request, res: Response) => {
+    removeFollow = async (req: Request, res: Response): Promise<void> => {
         const { userId } = req.body;
         const { followingId } = req.params;
         if (userId === followingId) {
@@ -156,7 +156,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    getFollowList = async (req: Request, res: Response) => {
+    getFollowList = async (req: Request, res: Response): Promise<void> => {
         const result = await Model.Users.findById(req.body.userId).populate({
             path: "following.user",
             select: "name photo",
