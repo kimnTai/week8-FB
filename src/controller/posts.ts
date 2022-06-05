@@ -41,11 +41,11 @@ class PostsController {
      * @memberof PostsController
      */
     addOne = async (req: Request, res: Response): Promise<void> => {
-        const { content, type, userId, image } = req.body;
+        const { content, userId, image } = req.body;
         if (!(await Model.Users.findById(userId))) {
             throw new Error("無此使用者 id");
         }
-        const result = await Model.Posts.create({ content, type, user: userId, image });
+        const result = await Model.Posts.create({ content, user: userId, image });
         res.send({ status: "success", result });
     };
 
@@ -58,10 +58,10 @@ class PostsController {
      */
     editOne = async (req: Request, res: Response): Promise<void> => {
         const { postId } = req.params;
-        const { content, type, name } = req.body;
+        const { content, name } = req.body;
         const result = await Model.Posts.findOneAndUpdate(
             { _id: postId },
-            { content, type, name },
+            { content, name },
             { new: true, runValidators: true }
         );
         if (!result) {
