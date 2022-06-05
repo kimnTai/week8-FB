@@ -125,6 +125,9 @@ class PostsController {
      */
     addComment = async (req: Request, res: Response): Promise<void> => {
         const { postId } = req.params;
+        if (!(await Model.Posts.findById(postId))) {
+            throw new Error("無此貼文 id");
+        }
         const { userId, comment } = req.body;
         const result = await Model.Comments.create({ userId, postId, comment });
         res.send({ status: "success", result });
