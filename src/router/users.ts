@@ -5,7 +5,7 @@ import Utils from "../utils";
 
 const router = Utils.catchAsyncRouter(express.Router());
 
-router.get("/", Controller.User.getUsers);
+router.get("/", Controller.User.getAll);
 
 router.post("/sign_up", Middleware.checkSignUp, Controller.User.signUp);
 

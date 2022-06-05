@@ -5,7 +5,17 @@ import "dotenv/config";
 import * as Model from "../model";
 
 class UsersController {
-    getUsers = async (req: Request, res: Response): Promise<void> => {
+    /**
+     * @description 取得所有會員 ( dev 環境)
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getAll = async (req: Request, res: Response): Promise<void> => {
+        if (process.env.NODE_ENV !== "dev") {
+            res.status(404).send({ status: "error", message: "無此路由資訊" });
+            return;
+        }
         const result = await Model.Users.find()
             .sort("-createdAt")
             .limit(Number(req.query.limit) ?? 10);
