@@ -118,14 +118,16 @@ class UsersController {
         if (userId === followingId) {
             throw new Error("您無法追蹤自己");
         }
-        await Model.Users.updateOne(
-            { _id: followingId, "followers.user": { $ne: userId } },
-            { $addToSet: { followers: { user: userId } } }
-        );
-        await Model.Users.updateOne(
-            { _id: userId, "following.user": { $ne: followingId } },
-            { $addToSet: { following: { user: followingId } } }
-        );
+        await Promise.all([
+            Model.Users.updateOne(
+                { _id: followingId, "followers.user": { $ne: userId } },
+                { $push: { followers: { user: userId } } }
+            ),
+            Model.Users.updateOne(
+                { _id: userId, "following.user": { $ne: followingId } },
+                { $push: { following: { user: followingId } } }
+            ),
+        ]);
         res.send({ status: "success", message: "您已成功追蹤！" });
     };
 
@@ -141,8 +143,10 @@ class UsersController {
         if (userId === followingId) {
             throw new Error("您無法取消追蹤自己");
         }
-        await Model.Users.updateOne({ _id: userId }, { $pull: { following: { user: followingId } } });
-        await Model.Users.updateOne({ _id: followingId }, { $pull: { followers: { user: userId } } });
+        await Promise.all([
+            Model.Users.updateOne({ _id: userId }, { $pull: { following: { user: followingId } } }),
+            Model.Users.updateOne({ _id: followingId }, { $pull: { followers: { user: userId } } }),
+        ]);
         res.send({ status: "success", message: "您已成功取消追蹤！" });
     };
 
