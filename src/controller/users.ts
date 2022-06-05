@@ -161,7 +161,7 @@ class UsersController {
             path: "following.user",
             select: "name photo",
         });
-        res.send({ status: "success", result });
+        res.send({ status: "success", result: { following: result?.following } });
     };
 }
 
