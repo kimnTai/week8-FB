@@ -27,7 +27,7 @@ var Controller = __importStar(require("../controller"));
 var middleware_1 = __importDefault(require("../middleware"));
 var utils_1 = __importDefault(require("../utils"));
 var router = utils_1.default.catchAsyncRouter(express_1.default.Router());
-router.get("/", Controller.User.getUsers);
+router.get("/", Controller.User.getAll);
 router.post("/sign_up", middleware_1.default.checkSignUp, Controller.User.signUp);
 router.post("/sign_in", middleware_1.default.checkSignIn, Controller.User.signIn);
 router.post("/updatePassword", middleware_1.default.checkUpdatePassword, Controller.User.updatePassword);

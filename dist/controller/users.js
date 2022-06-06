@@ -76,14 +76,19 @@ var Model = __importStar(require("../model"));
 var UsersController = (function () {
     function UsersController() {
         var _this = this;
-        this.getUsers = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAll = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result;
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4, Model.Users.find()
-                            .sort("-createdAt")
-                            .limit((_a = Number(req.query.limit)) !== null && _a !== void 0 ? _a : 10)];
+                    case 0:
+                        if (process.env.NODE_ENV !== "dev") {
+                            res.status(404).send({ status: "error", message: "無此路由資訊" });
+                            return [2];
+                        }
+                        return [4, Model.Users.find()
+                                .sort("-createdAt")
+                                .limit((_a = Number(req.query.limit)) !== null && _a !== void 0 ? _a : 10)];
                     case 1:
                         result = _b.sent();
                         res.send({ status: "success", result: result });
