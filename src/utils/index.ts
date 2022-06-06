@@ -47,7 +47,7 @@ class Utils {
                     }
                     break;
                 case "sex":
-                    if (value !== "male" && value !== "female") {
+                    if (!["male", "female"].includes(value)) {
                         throw new Error("sex 只能是 male 或 female");
                     }
                     break;
