@@ -1,0 +1,698 @@
+{
+	"info": {
+		"_postman_id": "1195432b-f751-42e0-ba9d-020d72c6d683",
+		"name": "week8 - heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16994236"
+	},
+	"item": [
+		{
+			"name": "會員功能",
+			"item": [
+				{
+					"name": "註冊",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"測試密碼會員9\",\r\n    \"email\": \"a123456789@gmail.com\",\r\n    \"password\": \"12345678a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/sign_up",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登入",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"a223456@gmail.com\",\r\n    \"password\": \"1a245678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/sign_in",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"sign_in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "重設密碼",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\",\r\n    \"password\": \"1a245678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/updatePassword",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得個人資料",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/profile",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新個人資料",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\",\r\n    \"name\": \"更新測試6/7\",\r\n    \"email\": \"a223456@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/profile",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "會員按讚追蹤",
+			"item": [
+				{
+					"name": "個人按讚的貼文清單",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/getLikeList",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"getLikeList"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "追蹤朋友",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/62924b27b19b4f31ca38730c/follow",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"62924b27b19b4f31ca38730c",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "個人追蹤清單",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/following",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"following"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消追蹤",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/users/62924b27b19b4f31ca38730c/unfollow",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"users",
+								"62924b27b19b4f31ca38730c",
+								"unfollow"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "動態貼文",
+			"item": [
+				{
+					"name": "取得所有貼文",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts?sort=new",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "new",
+									"description": "排序 new 或 old"
+								},
+								{
+									"key": "keyword",
+									"value": "測試",
+									"description": "關鍵字搜尋",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取得單筆貼文",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts/629b18f0195a3565b75998de",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts",
+								"629b18f0195a3565b75998de"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增單筆貼文",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\",\r\n    \"content\": \"測試貼文6/7\",\r\n    \"image\": \"https://i.imgur.com/FLa3HcR.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "編輯單筆貼文",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\",\r\n    \"content\": \"編輯測試6/77\",\r\n    \"image\": \"https://i.imgur.com/cMp9qeW.png\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts/629e2c1997034ebec6d37d15",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts",
+								"629e2c1997034ebec6d37d15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一則貼文的讚",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts/629b18f0195a3565b75998de/like",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts",
+								"629b18f0195a3565b75998de",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "取消一則貼文的讚",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts/629b18f0195a3565b75998de/unlike",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts",
+								"629b18f0195a3565b75998de",
+								"unlike"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "新增一則貼文的留言",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"今天天氣不錯\",\r\n    \"userId\": \"628fad2f317a8b67c3bd6baa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/posts/629b18f0195a3565b75998de/comment",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"posts",
+								"629b18f0195a3565b75998de",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "其它",
+			"item": [
+				{
+					"name": "檔案-圖片上傳",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTM4MjE5NTIsImV4cCI6MTY1NDQyNjc1Mn0.woXSmywur7Dwv6b0bArhP2rWWEbZRKZOVfcJd5GWzlU",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/kimn/Desktop/IMG_6766.jpg"
+								},
+								{
+									"key": "userId",
+									"value": "628fad2f317a8b67c3bd6baa",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://kimn-metawall.herokuapp.com/upload",
+							"protocol": "https",
+							"host": [
+								"kimn-metawall",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjhmYWQyZjMxN2E4YjY3YzNiZDZiYWEiLCJpYXQiOjE2NTQ1MzI3MTQsImV4cCI6MTY1NTEzNzUxNH0.fH23hNFeB1XrD-AwRPwqg3EqPsdEuj7gJ8OI921NQXk",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	]
+}
