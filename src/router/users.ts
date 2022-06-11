@@ -26,13 +26,14 @@ router.delete("/:followingId/unfollow", Middleware.isAuth, Controller.User.remov
 router.get("/following", Middleware.isAuth, Controller.User.getFollowList);
 
 import passport from "passport";
+import jwt from "jsonwebtoken";
 router.get("/google", passport.authenticate("google", { scope: ["email", "profile"] }));
 
 router.get("/google/callback", passport.authenticate("google", { session: false }), (req, res) => {
-    res.send({
-        status: "success",
-        result: req.user,
-    });
+    const { _id, name } = req.user as any;
+    const { JWT_SECRET, JWT_EXPIRES_DAY } = process.env as any;
+    const token = jwt.sign({ userId: _id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_DAY });
+    res.redirect(`https://kimntai.github.io/week4-FullStack/#/callback?token=${token}&name=${name}`);
 });
 
 export default router;
