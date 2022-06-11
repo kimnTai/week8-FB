@@ -22,4 +22,3 @@ app.use(Exception.notFindRoute);
 app.use(Exception.catchCustomError);
 
 app.listen(process.env.PORT, () => console.log("伺服器啟動中"));
-
