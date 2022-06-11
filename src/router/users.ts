@@ -25,4 +25,14 @@ router.delete("/:followingId/unfollow", Middleware.isAuth, Controller.User.remov
 
 router.get("/following", Middleware.isAuth, Controller.User.getFollowList);
 
+import passport from "passport";
+router.get("/google", passport.authenticate("google", { scope: ["email", "profile"] }));
+
+router.get("/google/callback", passport.authenticate("google", { session: false }), (req, res) => {
+    res.send({
+        status: "success",
+        result: req.user,
+    });
+});
+
 export default router;
