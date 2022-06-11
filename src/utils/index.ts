@@ -7,7 +7,7 @@ class Utils {
      * @param {RequestHandler} func
      * @memberof Utils
      */
-    catchAsync = (func: RequestHandler) => {
+    catchAsync = (func: RequestHandler): RequestHandler => {
         return (req: Request, res: Response, next: NextFunction) => {
             Promise.resolve(func(req, res, next)).catch(next);
         };
@@ -18,7 +18,7 @@ class Utils {
      * @param {Router} router
      * @memberof Utils
      */
-    catchAsyncRouter = (router: Router) => {
+    catchAsyncRouter = (router: Router): Router => {
         for (const key in router) {
             if (["get", "post", "delete", "patch"].includes(key)) {
                 const method = (<any>router)[key];
@@ -35,7 +35,7 @@ class Utils {
      * @param {{ [key: string]: string }} param
      * @memberof Middleware
      */
-    checkValidator = (param: { [key: string]: string | undefined }) => {
+    checkValidator = (param: { [key: string]: string | undefined }): void => {
         for (const [key, value] of Object.entries(param)) {
             if (!value) {
                 throw new Error("欄位未填寫正確");
@@ -44,6 +44,11 @@ class Utils {
                 case "name":
                     if (!validator.isLength(value, { min: 2 })) {
                         throw new Error("name 至少 2 個字元以上");
+                    }
+                    break;
+                case "sex":
+                    if (!["male", "female"].includes(value)) {
+                        throw new Error("sex 只能是 male 或 female");
                     }
                     break;
                 case "email":
@@ -63,6 +68,11 @@ class Utils {
                     }
                     if (!validator.isAlphanumeric(value)) {
                         throw new Error("密碼需至少 8 碼以上，並英數混合");
+                    }
+                    break;
+                case "image":
+                    if (!validator.isURL(value, { protocols: ["https"] })) {
+                        throw new Error("image 格式不正確");
                     }
                     break;
                 default:

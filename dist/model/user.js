@@ -10,6 +10,20 @@ var userSchema = new mongoose_1.default.Schema({
     email: { type: String, required: [true, "email 未填寫"] },
     password: { type: String, required: [true, "password 未填寫"], select: false },
     photo: { type: String, default: "https://i.imgur.com/tPmUQVM.png" },
+    followers: [
+        {
+            _id: false,
+            user: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "user" },
+            createdAt: { type: Date, default: Date.now },
+        },
+    ],
+    following: [
+        {
+            _id: false,
+            user: { type: mongoose_1.default.Schema.Types.ObjectId, ref: "user" },
+            createdAt: { type: Date, default: Date.now },
+        },
+    ],
 }, { versionKey: false, timestamps: true });
 var Users = mongoose_1.default.model("user", userSchema);
 exports.default = Users;

@@ -37,23 +37,15 @@ class Exception {
      * @memberof Exception
      */
     catchCustomError = (err: CustomError, req: Request, res: Response, next: NextFunction) => {
-        if (err.name === "ValidationError" || err.name === "CastError") {
-            return res.status(400).send({ status: "error", message: err.message });
-        }
         if (err.type === "entity.parse.failed") {
             return res.status(400).send({ status: "error", message: err.type });
-        }
-        if (err.name === "JsonWebTokenError") {
-            return res.status(400).send({ status: "error", message: err.message });
         }
         // 開發模式回傳錯誤訊息
         if (process.env.NODE_ENV === "dev") {
             return res.status(400).json({ status: "error", message: err.message, err });
         }
-        res.status(500).send({ status: "error", message: "系統錯誤" });
+        return res.status(400).json({ status: "error", message: err.message });
     };
 }
 
-const exception = new Exception();
-
-export { exception };
+export default new Exception();

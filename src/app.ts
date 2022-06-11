@@ -5,7 +5,7 @@ import "dotenv/config";
 import "./connection";
 import "./model";
 import * as Router from "./router";
-import { exception } from "./exception";
+import Exception from "./exception";
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use("/posts", Router.posts);
 app.use("/users", Router.users);
 app.use("/upload", Router.upload);
 
-app.use(exception.notFindRoute);
-app.use(exception.catchCustomError);
+app.use(Exception.notFindRoute);
+app.use(Exception.catchCustomError);
 
 app.listen(process.env.PORT, () => console.log("伺服器啟動中"));

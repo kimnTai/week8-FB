@@ -5,7 +5,17 @@ import "dotenv/config";
 import * as Model from "../model";
 
 class UsersController {
-    getUsers = async (req: Request, res: Response): Promise<void> => {
+    /**
+     * @description 取得所有會員 ( dev 環境)
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getAll = async (req: Request, res: Response): Promise<void> => {
+        if (process.env.NODE_ENV !== "dev") {
+            res.status(404).send({ status: "error", message: "無此路由資訊" });
+            return;
+        }
         const result = await Model.Users.find()
             .sort("-createdAt")
             .limit(Number(req.query.limit) ?? 10);
@@ -54,7 +64,7 @@ class UsersController {
      * @description 重設密碼
      * @memberof UsersController
      */
-    updatePassword = async (req: Request, res: Response) => {
+    updatePassword = async (req: Request, res: Response): Promise<void> => {
         const password = await bcrypt.hash(req.body.password, 12);
         if (!(await Model.Users.findByIdAndUpdate(req.body.userId, { password }))) {
             throw new Error("此 id 不存在");
@@ -68,7 +78,7 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    getProfile = async (req: Request, res: Response) => {
+    getProfile = async (req: Request, res: Response): Promise<void> => {
         const result = await Model.Users.findById(req.body.userId);
         if (!result) {
             throw new Error("此 id 不存在");
@@ -82,14 +92,86 @@ class UsersController {
      * @param {Response} res
      * @memberof UsersController
      */
-    updateProfile = async (req: Request, res: Response) => {
-        const { userId, name, email, photo } = req.body;
-        const _result = await Model.Users.findByIdAndUpdate(userId, { name, email, photo });
+    updateProfile = async (req: Request, res: Response): Promise<void> => {
+        const { userId, name, sex, photo } = req.body;
+        const _result = await Model.Users.findByIdAndUpdate(userId, { name, sex, photo });
         if (!_result) {
             throw new Error("此 id 不存在");
         }
         const result = await Model.Users.findById(userId);
         res.send({ status: "success", message: "更新成功", result });
+    };
+
+    /**
+     * @description 個人按讚貼文
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getLikeList = async (req: Request, res: Response): Promise<void> => {
+        const result = await Model.Posts.find({ likes: { $in: [req.body.userId] } }).populate({
+            path: "user",
+            select: "_id name",
+        });
+        res.send({ status: "success", result });
+    };
+
+    /**
+     * @description 新增追蹤
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    addFollow = async (req: Request, res: Response): Promise<void> => {
+        const { userId } = req.body;
+        const { followingId } = req.params;
+        if (userId === followingId) {
+            throw new Error("您無法追蹤自己");
+        }
+        await Promise.all([
+            Model.Users.updateOne(
+                { _id: followingId, "followers.user": { $ne: userId } },
+                { $push: { followers: { user: userId } } }
+            ),
+            Model.Users.updateOne(
+                { _id: userId, "following.user": { $ne: followingId } },
+                { $push: { following: { user: followingId } } }
+            ),
+        ]);
+        res.send({ status: "success", message: "您已成功追蹤！" });
+    };
+
+    /**
+     * @description 移除追蹤
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    removeFollow = async (req: Request, res: Response): Promise<void> => {
+        const { userId } = req.body;
+        const { followingId } = req.params;
+        if (userId === followingId) {
+            throw new Error("您無法取消追蹤自己");
+        }
+        await Promise.all([
+            Model.Users.updateOne({ _id: userId }, { $pull: { following: { user: followingId } } }),
+            Model.Users.updateOne({ _id: followingId }, { $pull: { followers: { user: userId } } }),
+        ]);
+        res.send({ status: "success", message: "您已成功取消追蹤！" });
+    };
+
+    /**
+     * @description 取得追蹤清單
+     * @param {Request} req
+     * @param {Response} res
+     * @memberof UsersController
+     */
+    getFollowList = async (req: Request, res: Response): Promise<void> => {
+        const result = await Model.Users.findById(req.body.userId).populate({
+            path: "following.user",
+            select: "name photo",
+        });
+        res.send({ status: "success", result: { following: result?.following } });
     };
 }
 

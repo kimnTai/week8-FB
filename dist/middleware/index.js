@@ -25,7 +25,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.middleware = void 0;
 var multer_1 = __importDefault(require("multer"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 require("dotenv/config");
@@ -38,7 +37,7 @@ var Middleware = (function () {
                 limits: { fileSize: 2 * Math.pow(1024, 2) },
                 fileFilter: function (req, file, callback) {
                     if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-                        callback(new Error("請上傳正確的檔案格式"));
+                        callback(new Error("圖片格式只接受 jpg、jpeg、png"));
                         return;
                     }
                     callback(null, true);
@@ -81,5 +80,4 @@ var Middleware = (function () {
     }
     return Middleware;
 }());
-var middleware = new Middleware();
-exports.middleware = middleware;
+exports.default = new Middleware();

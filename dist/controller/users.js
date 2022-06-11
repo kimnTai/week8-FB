@@ -76,14 +76,19 @@ var Model = __importStar(require("../model"));
 var UsersController = (function () {
     function UsersController() {
         var _this = this;
-        this.getUsers = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        this.getAll = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result;
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4, Model.Users.find()
-                            .sort("-createdAt")
-                            .limit((_a = Number(req.query.limit)) !== null && _a !== void 0 ? _a : 10)];
+                    case 0:
+                        if (process.env.NODE_ENV !== "dev") {
+                            res.status(404).send({ status: "error", message: "無此路由資訊" });
+                            return [2];
+                        }
+                        return [4, Model.Users.find()
+                                .sort("-createdAt")
+                                .limit((_a = Number(req.query.limit)) !== null && _a !== void 0 ? _a : 10)];
                     case 1:
                         result = _b.sent();
                         res.send({ status: "success", result: result });
@@ -172,12 +177,12 @@ var UsersController = (function () {
             });
         }); };
         this.updateProfile = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, userId, name, email, photo, _result, result;
+            var _a, userId, name, sex, photo, _result, result;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _a = req.body, userId = _a.userId, name = _a.name, email = _a.email, photo = _a.photo;
-                        return [4, Model.Users.findByIdAndUpdate(userId, { name: name, email: email, photo: photo })];
+                        _a = req.body, userId = _a.userId, name = _a.name, sex = _a.sex, photo = _a.photo;
+                        return [4, Model.Users.findByIdAndUpdate(userId, { name: name, sex: sex, photo: photo })];
                     case 1:
                         _result = _b.sent();
                         if (!_result) {
@@ -187,6 +192,78 @@ var UsersController = (function () {
                     case 2:
                         result = _b.sent();
                         res.send({ status: "success", message: "更新成功", result: result });
+                        return [2];
+                }
+            });
+        }); };
+        this.getLikeList = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, Model.Posts.find({ likes: { $in: [req.body.userId] } }).populate({
+                            path: "user",
+                            select: "_id name",
+                        })];
+                    case 1:
+                        result = _a.sent();
+                        res.send({ status: "success", result: result });
+                        return [2];
+                }
+            });
+        }); };
+        this.addFollow = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, followingId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.body.userId;
+                        followingId = req.params.followingId;
+                        if (userId === followingId) {
+                            throw new Error("您無法追蹤自己");
+                        }
+                        return [4, Promise.all([
+                                Model.Users.updateOne({ _id: followingId, "followers.user": { $ne: userId } }, { $push: { followers: { user: userId } } }),
+                                Model.Users.updateOne({ _id: userId, "following.user": { $ne: followingId } }, { $push: { following: { user: followingId } } }),
+                            ])];
+                    case 1:
+                        _a.sent();
+                        res.send({ status: "success", message: "您已成功追蹤！" });
+                        return [2];
+                }
+            });
+        }); };
+        this.removeFollow = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, followingId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.body.userId;
+                        followingId = req.params.followingId;
+                        if (userId === followingId) {
+                            throw new Error("您無法取消追蹤自己");
+                        }
+                        return [4, Promise.all([
+                                Model.Users.updateOne({ _id: userId }, { $pull: { following: { user: followingId } } }),
+                                Model.Users.updateOne({ _id: followingId }, { $pull: { followers: { user: userId } } }),
+                            ])];
+                    case 1:
+                        _a.sent();
+                        res.send({ status: "success", message: "您已成功取消追蹤！" });
+                        return [2];
+                }
+            });
+        }); };
+        this.getFollowList = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, Model.Users.findById(req.body.userId).populate({
+                            path: "following.user",
+                            select: "name photo",
+                        })];
+                    case 1:
+                        result = _a.sent();
+                        res.send({ status: "success", result: { following: result === null || result === void 0 ? void 0 : result.following } });
                         return [2];
                 }
             });
