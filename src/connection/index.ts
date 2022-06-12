@@ -1,2 +1,1 @@
 import "./mongoose";
-import "./passport";
