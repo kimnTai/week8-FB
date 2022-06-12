@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { config } from "dotenv";
 import Utils from "../utils";
 
 class Middleware {
@@ -76,7 +76,7 @@ class Middleware {
      */
     isAuth = (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.replace("Bearer ", "") as string;
-        const result = jwt.verify(token, process.env.JWT_SECRET as string);
+        const result = jwt.verify(token, config().parsed?.JWT_SECRET as string);
         if (!(<any>result).userId) {
             throw new Error("token 錯誤");
         }

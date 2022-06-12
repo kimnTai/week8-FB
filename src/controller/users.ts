@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { config, DotenvParseOutput } from "dotenv";
 import * as Model from "../model";
 
 class UsersController {
@@ -12,7 +12,7 @@ class UsersController {
      * @memberof UsersController
      */
     getAll = async (req: Request, res: Response): Promise<void> => {
-        if (process.env.NODE_ENV !== "dev") {
+        if (config().parsed?.NODE_ENV !== "dev") {
             res.status(404).send({ status: "error", message: "無此路由資訊" });
             return;
         }
@@ -55,8 +55,8 @@ class UsersController {
             throw new Error("密碼錯誤!");
         }
         const { password: _, ...result } = user.toObject();
-        const secret = process.env.JWT_SECRET as string;
-        const token = jwt.sign({ userId: user._id }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
+        const { JWT_SECRET, JWT_EXPIRES_DAY } = config().parsed as DotenvParseOutput;
+        const token = jwt.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_DAY });
         res.send({ status: "success", token, result });
     };
 
