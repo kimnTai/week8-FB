@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { config } from "dotenv";
 
 interface CustomError extends Error {
     type: string;
@@ -41,7 +42,7 @@ class Exception {
             return res.status(400).send({ status: "error", message: err.type });
         }
         // 開發模式回傳錯誤訊息
-        if (process.env.NODE_ENV === "dev") {
+        if (config().parsed?.NODE_ENV === "dev") {
             return res.status(400).json({ status: "error", message: err.message, err });
         }
         return res.status(400).json({ status: "error", message: err.message });

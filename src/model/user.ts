@@ -13,6 +13,8 @@ interface IUser extends mongoose.Document {
     photo: string;
     followers: IFollow[];
     following: IFollow[];
+    googleId: string;
+    facebookId: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -36,6 +38,8 @@ const userSchema = new mongoose.Schema<IUser>(
                 createdAt: { type: Date, default: Date.now },
             },
         ],
+        googleId: String,
+        facebookId: String,
     },
     { versionKey: false, timestamps: true }
 );

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
+import { config, DotenvParseOutput } from "dotenv";
 import Utils from "../utils";
 
 class Middleware {
@@ -75,18 +75,19 @@ class Middleware {
      * @memberof Middleware
      */
     isAuth = (req: Request, res: Response, next: NextFunction) => {
+        const { JWT_SECRET } = config().parsed as DotenvParseOutput;
         const token = req.headers.authorization?.replace("Bearer ", "") as string;
-        const result = jwt.verify(token, process.env.JWT_SECRET as string);
-        if (!(<any>result).userId) {
+        const result = jwt.verify(token, JWT_SECRET) as { userId: string };
+        if (!result.userId) {
             throw new Error("token 錯誤");
         }
         if (req.method === "GET") {
-            req.body.userId = (<any>result).userId;
+            req.body.userId = result.userId;
             return next();
         }
         const { userId, ...args } = req.body;
         Utils.checkValidator({ userId, ...args });
-        if (userId !== (<any>result).userId) {
+        if (userId !== result.userId) {
             throw new Error("token 錯誤 userId 不一致");
         }
         next();

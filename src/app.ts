@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import "dotenv/config";
+import { config } from "dotenv";
 import "./connection";
 import "./model";
 import * as Router from "./router";
@@ -17,8 +17,9 @@ app.use(morgan("dev"));
 app.use("/posts", Router.posts);
 app.use("/users", Router.users);
 app.use("/upload", Router.upload);
+app.use("/auth", Router.auth);
 
 app.use(Exception.notFindRoute);
 app.use(Exception.catchCustomError);
 
-app.listen(process.env.PORT, () => console.log("伺服器啟動中"));
+app.listen(config().parsed?.PORT, () => console.log("伺服器啟動中"));
