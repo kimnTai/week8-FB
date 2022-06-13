@@ -41,26 +41,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var form_data_1 = __importDefault(require("form-data"));
 var axios_1 = __importDefault(require("axios"));
-require("dotenv/config");
+var dotenv_1 = require("dotenv");
 var ImageController = (function () {
     function ImageController() {
         var _this = this;
         this.getImage = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var formData, data;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, IMGUR_ALBUM_ID, IMGUR_REFRESH_TOKEN, formData, data;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         if (!req.file) {
                             throw new Error("未上傳檔案");
                         }
+                        _a = (0, dotenv_1.config)().parsed, IMGUR_ALBUM_ID = _a.IMGUR_ALBUM_ID, IMGUR_REFRESH_TOKEN = _a.IMGUR_REFRESH_TOKEN;
                         formData = new form_data_1.default();
                         formData.append("image", req.file.buffer);
-                        formData.append("album", process.env.IMGUR_ALBUM_ID);
+                        formData.append("album", IMGUR_ALBUM_ID);
                         return [4, axios_1.default.post("https://api.imgur.com/3/image", formData, {
-                                headers: { Authorization: "Bearer " + process.env.IMGUR_REFRESH_TOKEN },
+                                headers: { Authorization: "Bearer " + IMGUR_REFRESH_TOKEN },
                             })];
                     case 1:
-                        data = (_a.sent()).data;
+                        data = (_b.sent()).data;
                         res.send({ status: "success", result: data.data.link });
                         return [2];
                 }

@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var multer_1 = __importDefault(require("multer"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-require("dotenv/config");
+var dotenv_1 = require("dotenv");
 var utils_1 = __importDefault(require("../utils"));
 var Middleware = (function () {
     function Middleware() {
@@ -61,8 +61,9 @@ var Middleware = (function () {
         };
         this.isAuth = function (req, res, next) {
             var _a;
+            var JWT_SECRET = (0, dotenv_1.config)().parsed.JWT_SECRET;
             var token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.replace("Bearer ", "");
-            var result = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+            var result = jsonwebtoken_1.default.verify(token, JWT_SECRET);
             if (!result.userId) {
                 throw new Error("token 錯誤");
             }

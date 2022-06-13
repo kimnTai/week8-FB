@@ -24,6 +24,8 @@ var userSchema = new mongoose_1.default.Schema({
             createdAt: { type: Date, default: Date.now },
         },
     ],
+    googleId: String,
+    facebookId: String,
 }, { versionKey: false, timestamps: true });
 var Users = mongoose_1.default.model("user", userSchema);
 exports.default = Users;

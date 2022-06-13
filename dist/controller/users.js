@@ -71,26 +71,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-require("dotenv/config");
+var dotenv_1 = require("dotenv");
 var Model = __importStar(require("../model"));
 var UsersController = (function () {
     function UsersController() {
         var _this = this;
         this.getAll = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var result;
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        if (process.env.NODE_ENV !== "dev") {
+                        if (((_a = (0, dotenv_1.config)().parsed) === null || _a === void 0 ? void 0 : _a.NODE_ENV) !== "dev") {
                             res.status(404).send({ status: "error", message: "無此路由資訊" });
                             return [2];
                         }
                         return [4, Model.Users.find()
                                 .sort("-createdAt")
-                                .limit((_a = Number(req.query.limit)) !== null && _a !== void 0 ? _a : 10)];
+                                .limit((_b = Number(req.query.limit)) !== null && _b !== void 0 ? _b : 10)];
                     case 1:
-                        result = _b.sent();
+                        result = _c.sent();
                         res.send({ status: "success", result: result });
                         return [2];
                 }
@@ -120,25 +120,25 @@ var UsersController = (function () {
             });
         }); };
         this.signIn = function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, email, password, user, _b, _, result, secret, token;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _a, email, password, user, _b, _, result, _c, JWT_SECRET, JWT_EXPIRES_DAY, token;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
                     case 0:
                         _a = req.body, email = _a.email, password = _a.password;
                         return [4, Model.Users.findOne({ email: email }).select("+password")];
                     case 1:
-                        user = _c.sent();
+                        user = _d.sent();
                         if (!user) {
                             throw new Error("此 Email 不存在!");
                         }
                         return [4, bcryptjs_1.default.compare(password, user.password)];
                     case 2:
-                        if (!(_c.sent())) {
+                        if (!(_d.sent())) {
                             throw new Error("密碼錯誤!");
                         }
                         _b = user.toObject(), _ = _b.password, result = __rest(_b, ["password"]);
-                        secret = process.env.JWT_SECRET;
-                        token = jsonwebtoken_1.default.sign({ userId: user._id }, secret, { expiresIn: process.env.JWT_EXPIRES_DAY });
+                        _c = (0, dotenv_1.config)().parsed, JWT_SECRET = _c.JWT_SECRET, JWT_EXPIRES_DAY = _c.JWT_EXPIRES_DAY;
+                        token = jsonwebtoken_1.default.sign({ userId: user._id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_DAY });
                         res.send({ status: "success", token: token, result: result });
                         return [2];
                 }
